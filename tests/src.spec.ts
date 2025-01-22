@@ -8,13 +8,26 @@ test("goto homepage", async ({ page }, testInfo) => {
   await expect(page).toHaveURL(baseURL);
 });
 
-test("accept cookies", async ({ page }) => {
+// These are merged into one test as if you test the hover colour change without accepting cookies, the test will fail
+// Due to the cookie popup happening semi randomly during the test
+test("accept cookies & test header hover colour change", async ({ page }) => {
   await page.goto("/");
 
   const acceptCookiesButton = page.getByRole("button", { name: "Accept cookies" });
   await acceptCookiesButton.click();
 
-  await expect(acceptCookiesButton).not.toBeVisible();
+  await expect(acceptCookiesButton).not.toBeInViewport();
+
+  // PART 2
+
+  const header = page.locator("header");
+  const headerLinkText = await header.getByRole('link').all();
+  headerLinkText.shift();
+
+  for(const link of headerLinkText) {
+    await link.hover();
+    await expect(link).toHaveCSS("color", "rgb(239, 51, 64)");
+  }
 })
 
 test('get started link', async ({ page }) => {
