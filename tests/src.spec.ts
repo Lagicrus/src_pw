@@ -1,6 +1,6 @@
-import { test, expect } from '@playwright/test';
+import {test, expect} from '@playwright/test';
 
-test("src full tests", async ({ page }, testInfo) => {
+test("src full tests", async ({page}, testInfo) => {
   // Check 1 - Navigate to https://srcuk.com/
   await page.goto("/");
   // Get the baseURL from the config
@@ -9,7 +9,7 @@ test("src full tests", async ({ page }, testInfo) => {
   // Check 2 - read that the user is on the URL
   await expect(page).toHaveURL(baseURL);
 
-  const acceptCookiesButton = page.getByRole("button", { name: "Accept cookies" });
+  const acceptCookiesButton = page.getByRole("button", {name: "Accept cookies"});
   await acceptCookiesButton.click();
 
   // Check 3 - ACCEPT COOKIES,
@@ -20,20 +20,19 @@ test("src full tests", async ({ page }, testInfo) => {
   headerLinkText.shift();
 
   // Check 4 - The colour change on hover on all of the header labels
-  for(const link of headerLinkText) {
+  for (const link of headerLinkText) {
     await link.hover();
     await expect(link).toHaveCSS("color", "rgb(239, 51, 64)");
   }
 
   // Check 5 - Select About US
-
-  await page.getByRole('banner').getByRole('link', { name: 'ABOUT US' }).click();
+  await page.getByRole('banner').getByRole('link', {name: 'ABOUT US'}).click();
 
   // Check 6 - Read that the user is on the URL https://srcuk.com/about-us/
   await expect(page).toHaveURL(`${baseURL}/about-us/`);
 
   // Check 7 - Using playwright verify and validate the presence of aesthetic locators
-  const aboutUsHeader = page.getByRole('heading', { name: 'ABOUT US' }).locator('span');
+  const aboutUsHeader = page.getByRole('heading', {name: 'ABOUT US'}).locator('span');
   await expect(aboutUsHeader).toBeVisible();
 
   // Check 8 - On the About US page demonstrate playwright scroll to footer, scroll to header
@@ -49,10 +48,10 @@ test("src full tests", async ({ page }, testInfo) => {
   await expect(footerLinkContainer).toBeVisible();
   const footerLinks = await footerLinkContainer.getByRole("link").all();
 
-  for(const link of footerLinks) {
+  for (const link of footerLinks) {
     // We skip the facebook and linkedin links as their <a> link doesn't contain any classes, so they are
     // tested next separately
-    if((await link.getAttribute('href')).match(/(facebook|linkedin)/i)) {
+    if ((await link.getAttribute('href')).match(/(facebook|linkedin)/i)) {
       const linkIcon = link.locator("i");
       await linkIcon.hover();
       await expect(linkIcon).toHaveCSS("color", "rgba(255, 255, 255, 0.5)");
@@ -67,19 +66,19 @@ test("src full tests", async ({ page }, testInfo) => {
   await expect(footer).toContainText("SRC UK Limited Copyright © 2025. All rights Reserved.");
 
   // Check 11 - Select Contact US
-  await page.getByRole('link', { name: 'Contact Us' }).click();
+  await page.getByRole('link', {name: 'Contact Us'}).click();
 
   // Check 12 - Ensure the page navigates to URL https://srcuk.com/contact/
   await expect(page).toHaveURL(`${baseURL}/contact/`);
 
   // Check 13 - Ensure that Contact is on the page as well as every piece of text
-  const contactTitle = page.getByRole('heading', { name: 'CONTACT', exact: true }).locator('span');
+  const contactTitle = page.getByRole('heading', {name: 'CONTACT', exact: true}).locator('span');
   await expect(contactTitle).toBeVisible();
-  const addressText = page.getByRole('heading', { name: 'ADDRESS' });
+  const addressText = page.getByRole('heading', {name: 'ADDRESS'});
   await expect(addressText).toBeVisible();
-  const contactFormText = page.getByRole('heading', { name: 'CONTACT FORM' });
+  const contactFormText = page.getByRole('heading', {name: 'CONTACT FORM'});
   await expect(contactFormText).toBeVisible();
-  const telephoneText = page.getByRole('heading', { name: 'TELEPHONE' });
+  const telephoneText = page.getByRole('heading', {name: 'TELEPHONE'});
   await expect(telephoneText).toBeVisible();
   await expect(footer).toContainText("SRC UK Limited Copyright © 2025. All rights Reserved.");
 
@@ -92,7 +91,7 @@ test("src full tests", async ({ page }, testInfo) => {
   // field presents with a red border and red writing with text Please fill out this
   // field.
   await yourNameInput.fill('');
-  const submitButton = page.getByRole('button', { name: 'Submit' });
+  const submitButton = page.getByRole('button', {name: 'Submit'});
   await submitButton.click();
 
   // Setup the locators for the error messages & inputs
