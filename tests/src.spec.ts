@@ -30,6 +30,25 @@ test("accept cookies & test header hover colour change", async ({ page }) => {
   }
 })
 
+test("about us page", async ({ page }, testInfo) => {
+  await page.goto("/");
+  await page.getByRole('banner').getByRole('link', { name: 'ABOUT US' }).click();
+
+  // Get the baseURL from the config
+  const baseURL = testInfo.config.projects[0].use.baseURL;
+  await expect(page).toHaveURL(`${baseURL}/about-us/`);
+
+  const aboutUsHeader = page.getByRole('heading', { name: 'ABOUT US' }).locator('span');
+  await expect(aboutUsHeader).toBeVisible();
+
+  const footer = page.locator("footer");
+  await footer.scrollIntoViewIfNeeded();
+  await expect(footer).toBeInViewport();
+
+  await aboutUsHeader.scrollIntoViewIfNeeded();
+  await expect(aboutUsHeader).toBeInViewport();
+})
+
 test('get started link', async ({ page }) => {
   await page.goto('https://playwright.dev/');
 
